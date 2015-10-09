@@ -1,14 +1,15 @@
 $(document).ready(function(){
 	
     
-    var siteurl = 'http://nw2day.com/';
-    var siteurl_app = siteurl+'test.php?';
+    var siteurl = 'http://al-dawrat.com/js/';
+    var siteurl_app = siteurl+'app/';
     
     $(".js_header_courses").click(function() {
 
         $('.loading').show();
         $('.data').hide();
         $('.no_network').hide();
+        
         
         alert(siteurl_app+'courses');
         
