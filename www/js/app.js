@@ -1,65 +1,32 @@
-$(document).ready(function(){
+    $(document).ready(function(){
 	
     
-    var siteurl = 'http://al-dawrat.com/js/';
-    var siteurl_app = siteurl+'app/';
+    var siteurl = 'http://al-dawrat.com/js/app/';
     
     $(".js_header_courses").click(function() {
 
         $('.loading').show();
         $('.data').hide();
-        $('.no_network').hide();
-        
-        
-        alert(siteurl_app+'courses');
-        
-        $.ajax({
-            method: "POST",
-            url: siteurl_app+'courses',
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'courses',{  },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_course", function(){
         
         var id = $(this).attr('id');
         
-        if ( $(this).attr('header_title')!='' ){
-            $('.app_name').html($(this).attr('header_title'));
-        }
-        
-        $('.loading').show();
         $('.data').hide();
-        $('.no_network').hide();
-        
-        
-        $.ajax({
-            url: siteurl_app+'course',
-            method: "POST",
-            data: { id : id },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $('.loading').show();
+        $.post(siteurl+'course',{ 'id':id },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
-        
+        );
         return false;
     });
     $("body").on("click",".js_course_sub", function(){
@@ -85,35 +52,28 @@ $(document).ready(function(){
 			alert('المرجو تحديد الجنس');
 		}else{
 			
-			$.ajax({
-                url: siteurl_app+'course_subscribe',
-                method: "POST",
-                data: { course_id:course_id, 
-                        name:name, 
-                        email:email, 
-                        mobile:mobile, 
-                        country:country, 
-                        city:city, 
-                        sex:sex  },
-                timeout: 10000,
-                error: function(jqXHR) { 
-                    if(jqXHR.status==0) {
-                        alert("لا يوجد اتصال بالانترنت !");
-                    }
+			$.post(siteurl+'course_subscribe',{ 
+                    course_id:course_id, 
+                    name:name, 
+                    email:email, 
+                    mobile:mobile, 
+                    country:country, 
+                    city:city, 
+                    sex:sex 
                 },
-                success: function(data) {
-                    var obj = jQuery.parseJSON( data );
-
-                    if ( obj.success==1 ){
-                        $('.js_sub_form input').val('');
-                        $('.js_sub_form select').val('');
-                    }
-
-                    alert(obj.msg);
+            function( data ){
+                
+                var obj = jQuery.parseJSON( data );
+                
+                if ( obj.success==1 ){
+                    $('.js_sub_form input').val('');
+                    $('.js_sub_form select').val('');
                 }
-            })
+                
+				alert(obj.msg);
+			})
 		}
-        
+		
 		return false;
 	})
     $("body").on("click",".js_courses_search", function(){
@@ -129,24 +89,13 @@ $(document).ready(function(){
         $('.data_content').html('');
         $('.js_courses_search').html('<span style="color:#fff;">المرجو الانتظار...</span>');
         
-        $.ajax({
-            url: siteurl_app+'courses/search/',
-            method: "POST",
-            data: { 'section':section,'country':country,'city':city,'paid':paid,'date':date },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_courses_search').html('<span style="color:#fff;">إبحث</span>');
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'courses/search/',{ 'section':section,'country':country,'city':city,'paid':paid,'date':date, },function(data){
+                
                 $('.js_courses_search').html('<span style="color:#fff;">إبحث</span>');
+                
                 $('.data_content').html(data).hide().fadeIn(200);
             }
-        })
-        
-        
+        );
         return false;
     })
     $("body").on("click",".js_courses_pagination", function(){
@@ -161,23 +110,13 @@ $(document).ready(function(){
         var paid = $(this).attr('paid');
         var date = $(this).attr('date');
         
-        $.ajax({
-            url: siteurl_app+'courses/pages/',
-            method: "POST",
-            data: { 'page_is':page_is,'section':section,'country':country,'city':city,'paid':paid,'date':date },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_courses_pagination').hide();
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $('.js_courses_pagination').html('<span style="color:#fff;">المرجو الانتظار...</span>');
+        $.post(siteurl+'courses/pages/',{ 'page_is':page_is,'section':section,'country':country,'city':city,'paid':paid,'date':date, },function(data){
+                
                 $('.js_courses_pagination').hide();
                 $('.pagination_data').append(data);
             }
-        })
-        
+        );
         return false;
     })
     
@@ -185,49 +124,26 @@ $(document).ready(function(){
 
         $('.loading').show();
         $('.data').hide();
-        $.ajax({
-            method: "POST",
-            url: siteurl_app+'organizers',
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'organizers',{  },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_organizer", function(){
         
         var id = $(this).attr('id');
         
-        if ( $(this).attr('header_title')!='' ){
-            $('.app_name').html($(this).attr('header_title'));
-        }
-        
         $('.data').hide();
         $('.loading').show();
-        $.ajax({
-            url: siteurl_app+'organizer',
-            method: "POST",
-            data: { id : id },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'organizer',{ 'id':id },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_organizers_search", function(){
@@ -240,24 +156,13 @@ $(document).ready(function(){
         $('.data_content').html('');
         $('.js_organizers_search').html('<span style="color:#fff;">المرجو الانتظار...</span>');
         
-        $.ajax({
-            url: siteurl_app+'organizers/search/',
-            method: "POST",
-            data: { 'country':country,'city':city },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_organizers_search').html('<span style="color:#fff;">إبحث</span>');
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'organizers/search/',{ 'country':country,'city':city },function(data){
+                
                 $('.js_organizers_search').html('<span style="color:#fff;">إبحث</span>');
+                
                 $('.data_content').html(data).hide().fadeIn(200);
             }
-        })
-        
-        
+        );
         return false;
     })
     $("body").on("click",".js_organizers_pagination", function(){
@@ -270,22 +175,12 @@ $(document).ready(function(){
         var city = $(this).attr('city');
         
         $('.js_organizers_pagination').html('<span style="color:#fff;">المرجو الانتظار...</span>');
-        $.ajax({
-            url: siteurl_app+'organizers/pages/',
-            method: "POST",
-            data: { 'page_is':page_is,'country':country,'city':city },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_organizers_pagination').hide();
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'organizers/pages/',{ 'page_is':page_is,'country':country,'city':city },function(data){
+                
                 $('.js_organizers_pagination').hide();
                 $('.pagination_data').append(data);
             }
-        })
+        );
         return false;
     })
     
@@ -294,49 +189,26 @@ $(document).ready(function(){
 
         $('.loading').show();
         $('.data').hide();
-        $.ajax({
-            method: "POST",
-            url: siteurl_app+'trainers',
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'trainers',{  },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_trainer", function(){
         
         var id = $(this).attr('id');
         
-        if ( $(this).attr('header_title')!='' ){
-            $('.app_name').html($(this).attr('header_title'));
-        }
-        
         $('.data').hide();
         $('.loading').show();
-        $.ajax({
-            url: siteurl_app+'trainer',
-            method: "POST",
-            data: { id : id },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'trainer',{ 'id':id },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_trainers_search", function(){
@@ -344,27 +216,17 @@ $(document).ready(function(){
         var d = $(this).attr('d');
         var country = $(".js_country_").val();
         var city = $(".js_city_v").val();
-        var sex = $(".js_sex").val();
         
         $('.data_content').html('');
         $('.js_trainers_search').html('<span style="color:#fff;">المرجو الانتظار...</span>');
         
-        $.ajax({
-            url: siteurl_app+'trainers/search/',
-            method: "POST",
-            data: { 'country':country,'city':city,'sex':sex },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_trainers_search').html('<span style="color:#fff;">إبحث</span>');
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'trainers/search/',{ 'country':country,'city':city },function(data){
+                
                 $('.js_trainers_search').html('<span style="color:#fff;">إبحث</span>');
+                
                 $('.data_content').html(data).hide().fadeIn(200);
             }
-        })
+        );
         return false;
     })
     $("body").on("click",".js_trainers_pagination", function(){
@@ -375,25 +237,14 @@ $(document).ready(function(){
         var page_is = $(this).attr('page_is');
         var country = $(this).attr('country');
         var city = $(this).attr('city');
-        var sex = $(this).attr('sex');
         
         $('.js_trainers_pagination').html('<span style="color:#fff;">المرجو الانتظار...</span>');
-        $.ajax({
-            url: siteurl_app+'trainers/pages/',
-            method: "POST",
-            data: { 'page_is':page_is,'country':country,'city':city,'sex':sex },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_trainers_pagination').hide();
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'trainers/pages/',{ 'page_is':page_is,'country':country,'city':city },function(data){
+                
                 $('.js_trainers_pagination').hide();
                 $('.pagination_data').append(data);
             }
-        })
+        );
         return false;
     })
         
@@ -401,49 +252,26 @@ $(document).ready(function(){
 
         $('.loading').show();
         $('.data').hide();
-        $.ajax({
-            method: "POST",
-            url: siteurl_app+'training_rooms',
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'training_rooms',{  },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_training_room", function(){
         
         var id = $(this).attr('id');
         
-        if ( $(this).attr('header_title')!='' ){
-            $('.app_name').html($(this).attr('header_title'));
-        }
-        
         $('.data').hide();
         $('.loading').show();
-        $.ajax({
-            url: siteurl_app+'training_room',
-            method: "POST",
-            data: { id : id },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'training_room',{ 'id':id },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     $("body").on("click",".js_training_rooms_search", function(){
@@ -455,22 +283,13 @@ $(document).ready(function(){
         $('.data_content').html('');
         $('.js_training_rooms_search').html('<span style="color:#fff;">المرجو الانتظار...</span>');
         
-        $.ajax({
-            url: siteurl_app+'training_rooms/search/',
-            method: "POST",
-            data: { 'country':country,'city':city },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_training_rooms_search').html('<span style="color:#fff;">إبحث</span>');
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'training_rooms/search/',{ 'country':country,'city':city },function(data){
+                
                 $('.js_training_rooms_search').html('<span style="color:#fff;">إبحث</span>');
+                
                 $('.data_content').html(data).hide().fadeIn(200);
             }
-        })
+        );
         return false;
     })
     $("body").on("click",".js_training_rooms_pagination", function(){
@@ -483,22 +302,12 @@ $(document).ready(function(){
         var city = $(this).attr('city');
         
         $('.js_training_rooms_pagination').html('<span style="color:#fff;">المرجو الانتظار...</span>');
-        $.ajax({
-            url: siteurl_app+'training_rooms/pages/',
-            method: "POST",
-            data: { 'page_is':page_is,'country':country,'city':city },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.js_training_rooms_pagination').hide();
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'training_rooms/pages/',{ 'page_is':page_is,'country':country,'city':city },function(data){
+                
                 $('.js_training_rooms_pagination').hide();
                 $('.pagination_data').append(data);
             }
-        })
+        );
         return false;
     })
     
@@ -539,41 +348,23 @@ $(document).ready(function(){
 		
 		$('.js_city select').addClass('ajax_loader_small');
 		
-		$.ajax({
-            url: siteurl+'city',
-            method: "POST",
-            data: { country:country },
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    alert("لا يوجد اتصال بالانترنت !");
-                }
-            },
-            success: function(data) {
-                $('.js_city').html(data);
-            }
-        })
+		$.post("http://localhost/dawarat/js/city", { country:country },
+			function(data){
+				$('.js_city').html(data);
+			}
+		);
 	});
     
     $(".js_header_contact_us").click(function() {
         
         $('.data').hide();
         $('.loading').show();
-        $.ajax({
-            method: "POST",
-            url: siteurl_app+'contact_us',
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'contact_us',{ },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
     
@@ -581,21 +372,12 @@ $(document).ready(function(){
         
         $('.data').hide();
         $('.loading').show();
-        $.ajax({
-            method: "POST",
-            url: siteurl_app+'register',
-            timeout: 10000,
-            error: function(jqXHR) { 
-                if(jqXHR.status==0) {
-                    $('.loading').hide();
-                    $('.no_network').show();
-                }
-            },
-            success: function(data) {
+        $.post(siteurl+'register',{ },function(data){
+
                 $('.loading').hide();
                 $('.data').html(data).fadeIn(200);
             }
-        })
+        );
         return false;
     });
 	$("body").on("change",".js_membership", function(){
@@ -622,59 +404,29 @@ $(document).ready(function(){
 		}
 		else{
 			
-			$.ajax({
-                url: siteurl_app+'register_send',
-                method: "POST",
-                data: { 'name':name, 
-                        'email':email, 
-                        'mobile':mobile, 
-                        'membership':membership,
-                        'accept':accept },
-                timeout: 10000,
-                error: function(jqXHR) { 
-                    if(jqXHR.status==0) {
-                        alert("لا يوجد اتصال بالانترنت !");
-                    }
+			$.post(siteurl+'register_send',{ 
+                    'name':name, 
+                    'email':email, 
+                    'mobile':mobile, 
+                    'membership':membership,
+                    'accept':accept 
                 },
-                success: function(data) {
-                    var obj = jQuery.parseJSON( data );
+            function( data ){
                 
-                    if ( obj.success==1 ){
-                        $('.js_sub_form input').val('');
-                        $('.js_sub_form select').val('');
-                    }
-
-                    $('.js_msg').html(obj.msg);
+                var obj = jQuery.parseJSON( data );
+                
+                if ( obj.success==1 ){
+                    $('.js_sub_form input').val('');
+                    $('.js_sub_form select').val('');
                 }
-            })
+                
+				$('.js_msg').html(obj.msg);
+			})
 		}
         return false;
     });
 	$("body").on("click",".close", function(){
 		$('.js_msg').html('');
 	})
-	$("body").on("click",".js_date_name", function(){
-		$('.js_date_name').hide();
-		$('.js_date').show();
-	})
 	
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
