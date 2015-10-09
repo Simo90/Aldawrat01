@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	
     
-    var siteurl = 'http://al-dawrat.com/js/';
-    var siteurl_app = siteurl+'app/';
+    var siteurl = 'http://nw2day.com/';
+    var siteurl_app = siteurl+'test.php?';
     
     $(".js_header_courses").click(function() {
 
