@@ -10,6 +10,8 @@ $(document).ready(function(){
         $('.data').hide();
         $('.no_network').hide();
         
+        alert(siteurl_app+'courses');
+        
         $.ajax({
             method: "POST",
             url: siteurl_app+'courses',
