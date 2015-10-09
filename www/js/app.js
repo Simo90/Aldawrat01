@@ -6,16 +6,6 @@ $(document).ready(function(){
     
     $(".js_header_courses").click(function() {
 
-        /*
-        $.post(siteurl_app+'courses',{  },function(data){
-
-                $('.loading').hide();
-                $('.data').html(data).fadeIn(200);
-            }
-        );
-        data: { name: "John", location: "Boston" },
-        */
-        
         $('.loading').show();
         $('.data').hide();
         $('.no_network').hide();
