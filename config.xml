@@ -25,7 +25,7 @@
 <gap:plugin name="com.phonegap.plugins.barcodescanner"/> 
 <gap:plugin name="cordova-plugin-battery-status" source="npm" /> 
 <gap:plugin name="cordova-plugin-dialogs"  source="npm" /> 
-<gap:plugin name="cordova-plugin-inappbrowser"  source="npm" /> 
+<gap:plugin name="cordova-plugin-inappbrowser" version="1.0.1" source="npm" /> 
 <gap:plugin name="cordova-plugin-media" source="npm" /> 
 <gap:plugin name="cordova-plugin-network-information"  source="npm" /> 
 <gap:plugin name="cordova-plugin-splashscreen" source="npm" /> 
