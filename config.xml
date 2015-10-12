@@ -33,7 +33,7 @@
 <gap:plugin name="cordova-plugin-inappbrowser" source="npm" />
   <gap:plugin name="org.apache.cordova.network-information" source="npm"/>
   <gap:plugin name="org.apache.cordova.splashscreen" source="npm"/>
-    
+    <gap:plugin name="cordova-plugin-whitelist" source="npm" />
     
   <icon src="icon.png"/>
   <gap:splash src="splash.png" />
@@ -64,7 +64,7 @@
   
     
     
-<access origin="http://al-dawrat.com" />
+<access origin="*"/>
   <plugin name="cordova-plugin-whitelist" version="1"/>
     
     
